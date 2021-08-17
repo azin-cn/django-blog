@@ -32,6 +32,7 @@ class Article(models.Model):
     tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
     category = models.ForeignKey(Category, verbose_name='类别',
                                  default='default', on_delete=models.SET_DEFAULT,null=True)
+    count = models.BigIntegerField(default=0,verbose_name='浏览量')
     # 参数 default = timezone.now 指定其在创建数据时将默认写入当前的时间
     created = models.DateTimeField(verbose_name='创建时间', default=timezone.now)
     updated = models.DateTimeField(verbose_name='更新时间', auto_now=True)

@@ -14,17 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls.static import static
-from django.contrib import admin
+from . import views
 from django.urls import path, include
 import xadmin
 
 urlpatterns = [
-    path('admin/', xadmin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+
+    path('admin/', xadmin.site.urls,name='adminx'),
+    path('feedback/',views.feedback,name='feedback'),
+    path('login/',views.login,name='login'),
+    path('dropdown/',views.dropdown,name='dropdown'),
+    path('register/',views.register,name='register'),
 
     path('',include('article.urls')),
     path('article/',include('article.urls')),
-    # path('feedback/',views.feedback)
 ]
 
 from blog import settings

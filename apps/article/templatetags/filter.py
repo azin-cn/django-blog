@@ -23,3 +23,14 @@ def color():
     blue = random.randint(0,255)
     color = 'rgb(%s,%s,%s)'%(red,green,blue)
     return color
+
+# 需要在ifelse中判断，只能用filter
+@register.filter
+def compare(index,current):
+    print('index=',index,"  ",'current=',current)
+    if index <= current-2:
+        return True
+    elif index-2>=current:
+        return True
+    else:
+        return False
