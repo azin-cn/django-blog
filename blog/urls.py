@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('',include('article.urls')),
     path('article/',include('article.urls')),
+    # path('feedback/',views.feedback)
 ]
 
 from blog import settings

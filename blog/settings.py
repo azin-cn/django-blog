@@ -76,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 添加自定义的全局变量，最新文章和分类
+                'article.views.article_global_var'
             ],
         },
     },

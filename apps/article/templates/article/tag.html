@@ -1,0 +1,11 @@
+{% load filter %}
+<div class="col-xs-12">
+    <h4>标签云</h4>
+    <!-- 随机颜色或者随机字体或者随机颜色与随机字体,color自定义函数 -->
+    {% for tag in tags %}
+        {#第一个tag是对象，第二个tag是名称#}
+        <a style="color:{% color %};font-size:15px;"
+           {#传递名称给article_tag的路由，进行匹配#}
+           href="{% url 'article_tag' tag.tag %}">{{ tag.tag }}</a>
+    {% endfor %}
+</div>

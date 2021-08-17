@@ -8,9 +8,9 @@
         <div class="col-xs-12">
             <h3>文章列表</h3>
             <div class="list-group">
-                {% for article in articles_with_tag %}
+                {% for article in articles_with_tag_or_category_or_search %}
                     {# 传递路由给article_detail #}
-                    <a href="{% url 'article_detail' article.id %}" class="list-group-item"><span class="badge">
+                    <a href="{% url 'article_detail' article.id article.title %}" class="list-group-item"><span class="badge">
                         {#通过length过滤器得到含有html标签的文本长度，#}
                         {#通过striptags得到取出html标签后的文本内容#}
                         {#通用的阅读速度是文章的长度处于300得到的就是阅读的时长#}
@@ -21,18 +21,8 @@
 
             </div>
         </div>
-        <div class="col-xs-12">
-            <h4>标签云</h4>
-            <!-- 随机颜色或者随机字体或者随机颜色与随机字体,color自定义函数 -->
-            {% for tag in tags %}
-                {#第一个tag是对象，第二个tag是名称#}
-                <a style="color:{% color %};font-size:15px;"
-                   {#传递名称给article_tag的路由，进行匹配#}
-                   href="{% url 'article_tag' tag.tag %}">{{ tag.tag }}</a>
-            {% endfor %}
-
-
-        </div>
+        {#引入标签云#}
+        {% include 'article/tag.html' %}
         <!-- 分页码，« »，选中class="active"，超过四个同时显示，那么就缩略-->
         <center>
             <nav aria-label="Page navigation">
