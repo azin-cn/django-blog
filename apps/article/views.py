@@ -24,13 +24,14 @@ def index(request):
     articles = Article.objects.all()
     return render(request, 'article/index.html',{'articles':articles,})
 
-def judge_tag_category_search(request,articles_with_tag_or_category_or_search):
+def judge_tag_category_search(request,articles_with_tag_or_category_or_search,name):
     # 如果存在相应的文章
     # articles_with_tag.count() != 0
     if articles_with_tag_or_category_or_search.exists():
         # 如果存在文章，那么还需要进行分页功能的实现
         return render(request, 'article/articles_with_tag_or_category_or_search.html',
-                      {'articles_with_tag_or_category_or_search': articles_with_tag_or_category_or_search})
+                      {'articles_with_tag_or_category_or_search': articles_with_tag_or_category_or_search,
+                       'name':name})
     else:
         # 设置状态码为404，默认为200，
         return render(request, '404.html', status=404)
@@ -42,7 +43,7 @@ def tag(request,name):
     try:
         tag = Tag.objects.get(tag=name)
         articles_with_tag_or_category_or_search = tag.article_set.all()
-        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search,name=name)
     except:
         return render(request,'404.html',status=404)
 
@@ -53,7 +54,7 @@ def category(request,name):
     try:
         category = Category.objects.get(category=name)
         articles_with_tag_or_category_or_search = category.article_set.all()
-        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search,name=name)
     except:
         return render(request,'404.html',status=404)
 
@@ -66,16 +67,27 @@ def search(request):
     if keyword is not None:
         articles_with_tag_or_category_or_search = Article.objects.filter(
             Q(title__contains=keyword) | Q(content__contains=keyword))
-        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search,name=keyword)
     elif keyword=='':
         return render(request,'404.html',status=404)
 
 # 详情
-def detail(request, id, name):
+def detail(request, id):
     # 这里可以使用filter函数，返回的是对象的集合，需要取出对象在拿字段的值，get函数返回的是一个对象
     # article = Article.objects.filter(id=id)[0]
     try:
         article = Article.objects.get(id=id)
     except :
-        return render(request,'404.html')
+        return render(request,'404.html',status=404)
     return render(request,'article/detail.html',{'article':article})
+
+# 分页结构，在index界面，搜索界面，分类界面，标签界面等需要分页
+# 也就是，需要有一个参数，存储的是index界面或者搜索界面等各界面的文章列表
+"""
+如index中，/?page=2
+ article/search/?keyword=keyword&page = 2
+ article/category/categoryName/?page=2
+ article/tag/tagName/?page=2
+"""
+def paging(request):
+    pass

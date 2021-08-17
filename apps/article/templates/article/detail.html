@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
+{% block title %}{{ article.title }} - luckydog幸运儿{% endblock title %}
 {% block main %}
 <div class="col-xs-12 col-sm-9">
     <h1>{{ article.title }}</h1>
@@ -8,7 +9,7 @@
 {# 使用过滤器，展示年月日#}
         <span class="label label-primary">日期：{{ article.created|date:"Y-m-d" }}</span>
         <span class="label label-warning">作者：{{ article.author }}</span>
-        <span class="label label-danger">浏览：258</span>
+        <span class="label label-danger">浏览：{{ article.count }}</span>
     </p>
 
     <div class="jumbotron" style="background-color: #F5F5F1">

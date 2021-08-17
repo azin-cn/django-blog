@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {#加载自定义过滤器#}
 {% load filter %}
+{% block title %}首页 - luckydog幸运儿{% endblock title %}
 {% block main %}
 <div class="col-xs-12 col-sm-9">
     <div class="row">
@@ -11,7 +12,7 @@
             <div class="list-group">
                 {% for article in articles %}
                     {# 传递路由给article_detail #}
-                    <a href="{% url 'article_detail' article.id article.title %}" class="list-group-item"><span class="badge">
+                    <a href="{% url 'article_detail' article.id %}" class="list-group-item"><span class="badge">
                         {#通过length过滤器得到含有html标签的文本长度，#}
                         {#通过striptags得到取出html标签后的文本内容#}
                         {#通用的阅读速度是文章的长度处于300得到的就是阅读的时长#}
