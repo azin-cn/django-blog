@@ -6,7 +6,7 @@ bin-release/
 apps/article/migrations/
 # Other files and folders
 .settings/
-.idea/
+.idea
 # Executables
 *.swf
 *.air
