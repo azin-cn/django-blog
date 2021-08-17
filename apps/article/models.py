@@ -25,15 +25,13 @@ class Category(models.Model):
 
 class Article(models.Model):
     author = models.ForeignKey(User, verbose_name='作者',
-                               default='default', on_delete=models.SET_DEFAULT,
-                               blank=True, null=True)
+                                   default='admin', on_delete=models.SET_DEFAULT,null=True)
     title = models.CharField(verbose_name='标题', max_length=32)
     content = RichTextUploadingField(verbose_name='内容',default='正文：')
     # 没有设置其为非必填字段，这里就会导致必须勾选了所有选项之后才让保存，需要设置blank=True，非必填项
     tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
     category = models.ForeignKey(Category, verbose_name='类别',
-                                 default='default', on_delete=models.SET_DEFAULT,
-                                 blank=True, null=True)
+                                 default='default', on_delete=models.SET_DEFAULT,null=True)
     # 参数 default = timezone.now 指定其在创建数据时将默认写入当前的时间
     created = models.DateTimeField(verbose_name='创建时间', default=timezone.now)
     updated = models.DateTimeField(verbose_name='更新时间', auto_now=True)
