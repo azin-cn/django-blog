@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from article.models import Article, Tag, Category
 
 
@@ -39,24 +39,36 @@ def tag(request,name):
     # 注意多表查询
     # http: // www.loonapp.com / blog / 3 /
     # articles_with_tag_or_category_or_search 是对象集合
-    tag = Tag.objects.get(tag=name)
-    articles_with_tag_or_category_or_search = tag.article_set.all()
-    return judge_tag_category_search(request,articles_with_tag_or_category_or_search)
+    try:
+        tag = Tag.objects.get(tag=name)
+        articles_with_tag_or_category_or_search = tag.article_set.all()
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+    except:
+        return render(request,'404.html',status=404)
 
 def category(request,name):
-    category = Category.objects.get(category=name)
-    articles_with_tag_or_category_or_search = category.article_set.all()
-    return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+    # 可以使用properties的配置文件，将耦合转移到文件的配置处
+    if name == '摄影':
+        return redirect('https://www.luckywords.cn/')
+    try:
+        category = Category.objects.get(category=name)
+        articles_with_tag_or_category_or_search = category.article_set.all()
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+    except:
+        return render(request,'404.html',status=404)
 
 # 搜素,使用get方式传递参数，而不是配置路由传递传递参数
 def search(request):
-    keyword = request.GET.get('keyword')
+    keyword = request.GET.get('keyword','')
     # print(keyword)
     # 标题或者是内容中包含关键字
     # 在组合使用条件查询时，应注意的是：使用Q查询，Q查询主要用于条件查询，而F查询主要用于更新操作
-    articles_with_tag_or_category_or_search = Article.objects.filter(
-        Q(title__contains=keyword)| Q(content__contains=keyword))
-    return judge_tag_category_search(request,articles_with_tag_or_category_or_search)
+    if keyword is not None:
+        articles_with_tag_or_category_or_search = Article.objects.filter(
+            Q(title__contains=keyword) | Q(content__contains=keyword))
+        return judge_tag_category_search(request, articles_with_tag_or_category_or_search)
+    elif keyword=='':
+        return render(request,'404.html',status=404)
 
 # 详情
 def detail(request, id, name):

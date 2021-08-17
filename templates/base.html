@@ -73,9 +73,9 @@
 
 			<!-- 搜索框 -->
 			<div class="col-xs-12 col-sm-3 sidebar-offcanvas">
-				<form id="search" method="get" action="{% url 'article_search' %}" role="search">
+				<form id="search" method="get" action="{% url 'article_search' %}" onsubmit="return check()" role="search">
 					<div class="input-group">
-					  <input type="text" class="form-control" name="keyword" placeholder="Search for..." />
+					  <input type="text" class="form-control" id="input" name="keyword" placeholder="" />
 					  <span class="input-group-btn">
 						<button class="btn btn-default" type="submit">Go!</button>
 					  </span>
@@ -100,7 +100,7 @@
                     <h4>分类</h4>
                     <div class="list-group">
                         {% for category in categories %}
-                        <a href="" class="list-group-item">{{ category.category }}</a>
+                        <a href="{% url 'article_category' category.category %}" class="list-group-item">{{ category.category }}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -187,6 +187,34 @@
                 myField.focus();
             }
         }
+
+        let input = document.getElementById("input");
+        function check() {
+            {#let content = document.getElementById('input').value;#}
+            input.placeholder = "不能为空";
+            return input.value !== "";
+        }
+
+        {#来一个搜索框的打字效果#}
+        let i = 0, timer =0,flag=true;
+        let str1="Search for...", str2="不能为空", str="";
+        function typing() {
+            str = str1;
+            {#str = flag ? str1 : str2;#}
+            if(i <= str.length){
+                input.placeholder = str.slice(0,i++)+"_";
+                timer=setTimeout(typing,200);
+            }else{
+                /*i = 0;
+                flag = !flag;
+                console.log(flag);console.log(str);
+                input.placeholder = "";
+                setTimeout(typing,200);*/
+                input.placeholder = str;
+                clearTimeout(timer);
+            }
+        }
+        typing()
     </script>
 </body>
 </html>
