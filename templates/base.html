@@ -1,0 +1,193 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="icon" href="https://www.isky.one/favicon.ico">
+    <title>LuckyDog幸运儿</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
+    <!-- 通过自有函数输出HTML头部信息 -->
+    <meta name="description" content="LuckyDog幸运儿">
+    <meta name="keywords" content="luckydog,luckydog幸运儿,博客,luckywords,幸运字,luckywords幸运字,blog">
+	
+</head>
+
+<body>
+    <br>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://www.isky.one/">LuckyDog幸运儿</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="">首页</a></li>
+                        <li><a href="">Cloud</a></li>
+                        <li><a href="">法国-法布尔</a></li>
+                        <li><a href="">关于</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/admin/">后台管理</a></li>
+                                <li><a href="/admin/">联系</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="row row-offcanvas row-offcanvas-right">
+			<!-- 
+				移动设备xs
+				平板电脑sm
+				笔记本md
+				电脑lg
+			-->
+            <!-- 内容变化区域，首页展示与具体内容 Begin block main-->
+            {% block main %}
+            {% endblock main %}
+            <!-- 内容变化区域，首页展示与具体内容 End block main-->
+
+			<!-- 搜索框 -->
+			<div class="col-xs-12 col-sm-3 sidebar-offcanvas">
+				<form id="search" method="post" action="./" role="search">
+					<div class="input-group">
+					  <input type="text" class="form-control" placeholder="Search for...">
+					  <span class="input-group-btn">
+						<button class="btn btn-default" type="button">Go!</button>
+					  </span>
+					</div>
+				</form>
+			</div>
+            <!-- 右侧 -->
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas hidden-xs" id="sidebar">
+                <!-- 最新文章 -->
+                <div id="sidebar">
+                    <h4>最新文章</h4>
+                    <div class="list-group">
+                        <a href="" class="list-group-item">2021.5.11</a>
+                        <a href="" class="list-group-item">2021.5.11</a>
+                        <a href="" class="list-group-item">喜庆喜庆</a>
+                        <a href="#" class="list-group-item">JavaScript学习第五天</a>
+                        <a href="" class="list-group-item">JavaScript学习第四天</a>
+                    </div>
+                </div>
+                <!-- 分类 -->
+                <div id="sidebar">
+                    <h4>分类</h4>
+                    <div class="list-group">
+                        <a href="" class="list-group-item">生活</a>
+                        <a href="" class="list-group-item">学习</a>
+                        <a href="https://www.luckywords.cn/" target="_blank" class="list-group-item">摄影</a>
+                        <a href="" class="list-group-item">杂七杂八</a>
+                    </div>
+                </div>
+			    <!-- 其他 -->
+                <div id="sidebar">
+                    <h4>其他</h4>
+                    <div class="list-group">
+                    <!-- 判断是否需要登录 -->
+                        <a href="#" class="list-group-item">注册</a>
+                        <a href="#" class="list-group-item">登录</a>                        
+                        <a href="#" class="list-group-item">管理</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <footer>
+				<p style="float:left">© 2020 LuckyDog幸运儿</p>
+				<p style="float:right">
+                    <a href="https://beian.miit.gov.cn/" target="_blank" style="color: black;text-decoration: none;">
+                        粤ICP备2020137256号-1
+                    </a></p>
+        </footer>
+
+    </div>
+    <!--/.container-->
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 聚焦
+            $('#title').select();
+
+            // 缩略名自适应宽度
+            var slug = $('#slug');
+
+            if (slug.length > 0) {
+                var wrap = $('<div />').css({
+                        'position': 'relative',
+                        'display': 'inline-block'
+                    }),
+                    justifySlug = $('<pre />').css({
+                        'display': 'block',
+                        'visibility': 'hidden',
+                        'height': slug.height(),
+                        'padding': '0 2px',
+                        'margin': 0
+                    }).insertAfter(slug.wrap(wrap).css({
+                        'left': 0,
+                        'top': 0,
+                        'minWidth': '5px',
+                        'position': 'absolute',
+                        'width': '100%'
+                    })),
+                    originalWidth = slug.width();
+
+                function justifySlugWidth() {
+                    var val = slug.val();
+                    justifySlug.text(val.length > 0 ? val : '     ');
+                }
+
+                slug.bind('input propertychange', justifySlugWidth);
+                justifySlugWidth();
+            }
+        });
+        function grin(tag) {
+            var myField;
+            tag = ' ' + tag + ' ';
+            if (document.getElementById('new-review-textbox') && document.getElementById('new-review-textbox').type == 'textarea') {
+                myField = document.getElementById('new-review-textbox');
+            } else {
+                return false;
+            }
+            if (document.selection) {
+                myField.focus();
+                sel = document.selection.createRange();
+                sel.text = tag;
+                myField.focus();
+            } else {
+                myField.value += tag;
+                myField.focus();
+            }
+        }
+    </script>
+</body>
+</html>
