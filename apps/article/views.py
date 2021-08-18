@@ -23,31 +23,29 @@ def article_global_var(request):
 # 首页
 def index(request):
     articles = Article.objects.all()
-    page,num_pages,page_obj,articles = paging(request, articles)
-    context = {'page':page,'num_pages':num_pages,'page_obj':page_obj,'articles':articles,}
+    # 处理清洗过后的path，page等，特别是articles，是只含有当前页面的articles，而不是所有的复合条件的articles
+    path,page,num_pages,page_obj,articles = paging(request, articles)
+    context = {'path':path,'page':page,'num_pages':num_pages,'page_obj':page_obj,'articles':articles,}
     return render(request, 'article/index.html',context)
 
-def judge_tag_category_search(request,name,page,num_pages,page_obj,articles):
+def judge_tag_category_search(request,name,path,page,num_pages,page_obj,articles):
     # 如果存在相应的文章
     # articles_with_tag.count() != 0
     # 此时的是一个page对象，而不是文章集合
     # AttributeError: 'Page' object has no attribute 'exists'
-    print('judge_tag_category_search正常')
     if articles.exists():
         # 如果存在文章，那么还需要进行分页功能的实现
-        print('内部judge_tag_category_search正常')
-        data = {'name':name,'page':page,'num_pages':num_pages,'page_obj':page_obj,
+        data = {'name':name,'path':path,'page':page,'num_pages':num_pages,'page_obj':page_obj,
                    'articles': articles,}
         return render(request, 'article/articles_with_tag_or_category_or_search.html',data)
     else:
         # 设置状态码为404，默认为200，
-        print('内部judge_tag_category_search异常')
         return render(request, '404.html', status=404)
 
 def tag_category_search(request,name,articles):
-    page, num_pages, page_obj, articles = paging(request, articles=articles)
-    print('tag_category_search正常')
-    return judge_tag_category_search(request, name, page, num_pages,
+    # 处理清洗过后的path，page等，特别是articles，是只含有当前页面的articles，而不是所有的复合条件的articles
+    path,page, num_pages, page_obj, articles = paging(request, articles=articles)
+    return judge_tag_category_search(request, name, path, page, num_pages,
                                      page_obj,articles)
 
 def tag(request,name):
@@ -69,7 +67,6 @@ def category(request,name):
     # try:
     category = Category.objects.get(category=name)
     articles = category.article_set.all()
-    print('category中articles=',articles)
     return tag_category_search(request,name,articles)
     # except:
     #     print('category中Error')
@@ -110,10 +107,22 @@ def detail(request, id):
 def paging(request,articles):
     # 将各个分类下的所有文章传进去，然后指出每个页面显示的多少条数据
     paginator = Paginator(articles,1)
+    path = clean_path(request)
     page = int(request.GET.get('page',1))
     num_pages = paginator.num_pages
-    print('page=',page)
     # AttributeError: 'Page' object has no attribute 'exists'
     page_obj = paginator.get_page(page)
     articles = page_obj.object_list
-    return page,num_pages,page_obj,articles
+    return path,page,num_pages,page_obj,articles
+
+def clean_path(request):
+    path = str(request.get_full_path())
+    if 'page=' in path:
+        """
+        对数据进行清洗，包括两种情况，第一个是page以？开头，第二个是page以&开头
+        字符串索引index(page)返回p的位置，减一得到？或者&的位置，切片去掉
+        """
+        path = path[:path.index('page=')-1]
+        # print(path)
+    path += '&' if '/search/' in path else '?'
+    return path

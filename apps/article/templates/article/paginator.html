@@ -4,21 +4,23 @@
 <nav aria-label="Page navigation">
     <ul class="pagination">
         {% if page_obj.has_previous %}
-            <li class="prev"><a href="?page={{ page_obj.previous_page_number }}">«</a></li>
+            {# request.get_full_path获取全路径，过滤器清洗，同时一个界面不需要重复清洗，直接以渲染时传递path即可 #}
+{#            {{ request.get_full_path|clean_path }}page={{ page_obj.previous_page_number }}#}
+            <li class="prev"><a href="{{ path }}page={{ page_obj.previous_page_number }}">«</a></li>
             <li><a href="?page=1">1</a></li>
         {% endif %}
         {% if 1|compare:page %}
             <li><a>...</a></li>
         {% endif %}
 
-        <li class="active" ><a href="?page={{ page }}">{{ page }}</a></li>
+        <li class="active" ><a href="{{ path }}page={{ page }}">{{ page }}</a></li>
 
         {% if num_pages|compare:page %}
             <li><a>...</a></li>
         {% endif %}
         {% if page_obj.has_next %}
-            <li><a href="?page={{ num_pages }}">{{ num_pages }}</a></li>
-            <li class="next"><a href="?page={{ page_obj.next_page_number }}">»</a></li>
+            <li><a href="{{ path }}page={{ num_pages }}">{{ num_pages }}</a></li>
+            <li class="next"><a href="{{ path }}page={{ page_obj.next_page_number }}">»</a></li>
         {% endif %}
     </ul>
 </nav>
