@@ -1,6 +1,6 @@
 #coding=utf-8
 from django.urls import path,include
-from article import views as article
+from apps.article import views as article
 
 # 使用关键字传参
 urlpatterns=[

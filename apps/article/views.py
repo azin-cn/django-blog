@@ -91,6 +91,11 @@ def detail(request, id):
     # article = Article.objects.filter(id=id)[0]
     try:
         article = Article.objects.get(id=id)
+        # 文章阅读量功能
+        # 仅对表中的一个字段进行更新,而不是所有的都更新
+        # article.save()
+        article.count += 1
+        article.save(update_fields=['count'])
     except :
         return render(request,'404.html',status=404)
     return render(request,'article/detail.html',{'article':article})
@@ -106,7 +111,7 @@ def detail(request, id):
 """
 def paging(request,articles):
     # 将各个分类下的所有文章传进去，然后指出每个页面显示的多少条数据
-    paginator = Paginator(articles,1)
+    paginator = Paginator(articles,12)
     path = clean_path(request)
     page = int(request.GET.get('page',1))
     num_pages = paginator.num_pages

@@ -22,10 +22,9 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
     path('admin/', xadmin.site.urls,name='adminx'),
-    path('feedback/',views.feedback,name='feedback'),
-    path('login/',views.login,name='login'),
-    path('dropdown/',views.dropdown,name='dropdown'),
-    path('register/',views.register,name='register'),
+    path('feedback/', views.feedback, name='feedback'),
+
+    path('user/',include('user.urls')),
 
     path('',include('article.urls')),
     path('article/',include('article.urls')),
