@@ -43,10 +43,7 @@ class Login(View):
                 login(request,user)
                 # print('prevous_url = %s'%prevous_url)
                 # 通过get方法前得到的previous_url
-                if prevous_url == '/':
-                    return redirect('/')
-                else:
-                    return redirect(prevous_url)
+                return redirect(prevous_url)
         # 如果表单的内容不符合规则，那么
         else:
             context = {'form_is_valid':form_is_valid}
@@ -54,13 +51,10 @@ class Login(View):
 
 def dropdown(request):
     logout(request)
-    referer = request.META.get('HTTP_REFERER', '')
+    referer = request.META.get('HTTP_REFERER', '/')
     # print('referer=%s' % referer)
     # print('path=%s'%request.get_full_path())
-    if referer == '':
-        return render(request, 'article/index.html')
-    else:
-        return redirect(referer)
+    return redirect(referer)
 
 
 def forgot(request):

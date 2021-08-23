@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from . import views
 from django.urls import path, include
-import xadmin
+import extra_apps.xadmin as xadmin
 
 urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),

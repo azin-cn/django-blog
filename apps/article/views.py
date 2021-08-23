@@ -2,21 +2,26 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from article.models import Article, Tag, Category
+from apps.article.models import Article, Tag, Category, Navigation
 
 
 # Create your views here.
-# 定义全局变量
+
+# 定义全局变量，在setting中进行添加
 def article_global_var(request):
     # 取出最新文章的前五条数据，不足五条，全部取出
     tags = Tag.objects.all()
     categories = Category.objects.all()
     latestArticles = Article.objects.all()
+    navigations = Navigation.objects.all()
     if latestArticles.count()>=5:
         latestArticles =  latestArticles[:5]
     if tags.count() >= 4:
         categories = categories[:4]
-    dict = {'latestArticles':latestArticles,'categories':categories,'tags':tags}
+    if navigations.count()>=4:
+        navigations = navigations[:4]
+    dict = {'latestArticles':latestArticles,'categories':categories,
+            'tags':tags,'navigations':navigations}
     # 取出分类名称，固定为四个，但是名称不固定，所以从数据库中找出
     return dict
 

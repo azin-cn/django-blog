@@ -3,10 +3,24 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
-from DjangoUeditor.models import UEditorField
+from extra_apps.DjangoUeditor.models import UEditorField
+
+"""
+对导航栏进行注册，通过数据库的方式进行更新
+同时也可以通过定义全局变量的方式进行数据的添加删除
+
+"""
+class Navigation(models.Model):
+    id = models.AutoField(primary_key=True)
+    nav = models.CharField(max_length=4,unique=True,verbose_name='导航栏目')
+    url = models.CharField(max_length=64,default='#' ,verbose_name='导航路径')
+    class Meta:
+        ordering = ('id',)
+        verbose_name = '导航'
+        verbose_name_plural = verbose_name
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=12,verbose_name='标签',unique=True)
+    tag = models.CharField(max_length=12,unique=True,verbose_name='标签')
     created = models.DateTimeField(verbose_name='创建时间',default=timezone.now)
     class Meta:
         verbose_name = '标签'
