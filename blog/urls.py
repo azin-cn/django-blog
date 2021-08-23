@@ -24,12 +24,14 @@ urlpatterns = [
     path('admin/', xadmin.site.urls,name='adminx'),
     path('feedback/', views.feedback, name='feedback'),
 
-    path('user/',include('user.urls')),
+    path('user/',include('apps.user.urls')),
 
-    path('',include('article.urls')),
-    path('article/',include('article.urls')),
+    path('',include('apps.article.urls')),
+    path('article/',include('apps.article.urls')),
 ]
 
+
+# 开发模式下，默认配置
 from blog import settings
 from blog.settings import MEDIA_ROOT
 if settings.DEBUG:
